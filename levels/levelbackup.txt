@@ -1,0 +1,11 @@
+Map:
+|--------------|
+|xxxxxxxxxxxxxx|
+|-----x|xxMxxxx|
+|xxxxxx|xxxxxTx|
+|xx----|xxxxxxx|
+|xMxxxx|xxxxxxx|
+|xxxxxxxxxxMxxx|
+|--------------|
+Map/
+

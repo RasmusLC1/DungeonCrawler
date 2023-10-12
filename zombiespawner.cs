@@ -37,7 +37,7 @@ public class ZombieSpawner {
             for (int j = 0; j < fields[i].Count-1; j++){
                 Field field = fields[i][j];
                 if (field.getmonsterSpawner){
-                    spawnerList.Add(Tuple.Create(field.getX-50, field.getY-50)); // Add the tuple to the list.
+                    spawnerList.Add(Tuple.Create(field.getX, field.getY)); // Add the tuple to the list.
                     spawnerLocations++;
                 }
             }

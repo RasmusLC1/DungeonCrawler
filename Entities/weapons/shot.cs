@@ -7,6 +7,7 @@ public class Shot : Entity {
     private double startY;
     private int Range;
     private int Damage;
+    private Movement movement = new Movement();
     private Coordinate coordinate = new Coordinate();
     public double getDirectionX {
         get{return DirectionX;}
@@ -45,7 +46,7 @@ public class Shot : Entity {
         }
     }
     public bool OutOfBounds(){
-        if (getX > 800 || getY > 400 ||
+        if (getX > movement.getWidth || getY > movement.getHeight ||
                 getY < 0 || getX < 0){
             return true;
         } else{

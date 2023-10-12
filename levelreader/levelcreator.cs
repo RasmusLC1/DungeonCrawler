@@ -31,37 +31,19 @@ namespace ZombieGame.Levels {
         public void LevelBuilder(string value){
             mapdata.MapDataSetup(value);
             fieldsCreator();
-            for (int i = 1; i < mapdata.getlevel.Count-1; i++){
+            for (int i = 0; i < mapdata.getlevel.Count; i++){
                 for (int j = 0; j < mapdata.getlevel[i].Length; j++){
-                    if (mapdata.getlevel[i][j] == '|'){
-                        for (int k = 0; k < 5; k++){
-                            fields[j*5][(i-1)*5+k].updateWall(true);
-                        }
-                        if (j < mapdata.getlevel[i].Length-1){
-                            //Fill in space between | and -
-                            if (mapdata.getlevel[i][j+1] == '-'){
-                                for (int k = 1; k < 5; k++){
-                                    fields[j*5+k][(i-1)*5].updateWall(true);   
-                                }
-                            }
-                        }
-                    } else if (mapdata.getlevel[i][j] == '-'){
-                        for (int k = 0; k < 5; k++){
-                            fields[j*5+k][(i-1)*5].updateWall(true);
-                            
-                        }
-                    } else if (mapdata.getlevel[i][j] == 'M'){
-                        if (i < mapdata.getlevel.Count-2){
-                            fields[j*5][i*5].updateMonsterSpawner(true);
-                        }
+                    if (mapdata.getlevel[i][j] == 'W'){
+                        fields[j][i].updateWall(true);
+                    } else if (mapdata.getlevel[i][j] == 'L'){
+                        fields[j][i].updateMonsterSpawner(true);
                     } else if (mapdata.getlevel[i][j] == 'T'){
-                        if (i < mapdata.getlevel.Count-2){
-                            fields[j*5][i*5].updateTreasure(true);
-                        }
+                        fields[j][i].updateTreasure(true);
                     }
                 }
             }
             player = new Player(150, 150, 10, 10, 5, 5, 0, 0);
+            ClearLevel();
 
         }
         public void fieldsCreator(){

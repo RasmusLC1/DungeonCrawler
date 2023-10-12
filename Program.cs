@@ -80,25 +80,9 @@ public class main : Form {
 
         // Draw on the back buffer
         using (Graphics backBufferGraphics = Graphics.FromImage(backBuffer)){
-            gameRenderer.DrawPlayer(backBufferGraphics, levelCreator.getPlayer, mouseX, mouseY);
-            foreach (var row in levelCreator.getfields) {
-                foreach (var field in row){
-                    if (field.getwall){
-                        gameRenderer.drawWall(backBufferGraphics, field.getX, field.getY, field.getsize, field.getsize);
-                    } else if (field.gettreasure){
-                        gameRenderer.drawTreasure(backBufferGraphics, field.getX, field.getY, field.getsize, field.getsize);
-                    }
-                }
-            }
-            foreach (var shot in shooting.shots) {
-                gameRenderer.drawShot(backBufferGraphics, (int)shot.getX, (int)shot.getY);
-            }
-            foreach (var zombie in zombiespawner.getzombies) {
-                gameRenderer.drawZombie(backBufferGraphics, (int)zombie.getX, (int)zombie.getY);
-            }
-        
-        }
+            gameRenderer.Render(backBufferGraphics, levelCreator, shooting, zombiespawner, mouseX, mouseY);
 
+        }
         // Draw the back buffer onto the form's graphics
         e.Graphics.DrawImage(backBuffer, 0, 0);
     }

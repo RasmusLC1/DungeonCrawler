@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection.Emit;
-using System.Runtime.ConstrainedExecution;
-using System.Windows.Forms.VisualStyles;
 using ZombieGame.Entities;
 using ZombieGame.Levels;
 
@@ -57,8 +54,16 @@ public class Movement {
             normalizedDirectionX = (int)(player.getX - distance.Item2*player.getplayerSpeed);
             normalizedDirectionY = (int)(player.getY - distance.Item1*player.getplayerSpeed);
         }
-        if (!field[normalizedDirectionX/10][normalizedDirectionY/10].getwall
-            && !field[normalizedDirectionX/10 + 1][normalizedDirectionY/10 + 1].getwall){
+        int fieldCoordinateXBack = normalizedDirectionX/10-1;
+        if (fieldCoordinateXBack < 0){
+            fieldCoordinateXBack = 0;
+        }
+        int fieldCoordinateYBack = normalizedDirectionY/10-1;
+        if (fieldCoordinateYBack < 0){
+            fieldCoordinateYBack = 0;
+        }
+        if (!field[fieldCoordinateXBack][fieldCoordinateYBack].getwall
+            && !field[normalizedDirectionX/10+1][normalizedDirectionY/10 + 1].getwall){
             player.updateXpos(normalizedDirectionX);
             player.updateYpos(normalizedDirectionY);
         }
@@ -113,10 +118,14 @@ public class Movement {
                     //Get the new coordinates
                     int normalizedDirectionX = (int) Math.Round(distance.Item1 * zombie.getzombieSpeed + zombie.getX);
                     int normalizedDirectionY = (int) Math.Round(distance.Item2 * zombie.getzombieSpeed + zombie.getY);
+                    level.getfields[(int)zombie.getX/10][(int)zombie.getY/10].updateEnemy(false);
                     zombie.updateXpos(normalizedDirectionX);
                     zombie.updateYpos(normalizedDirectionY);
+                    level.getfields[(int)zombie.getX/10][(int)zombie.getY/10].updateEnemy(true);
                     //Set direction for raycasting
-                    zombie.SetDirection(distance.Item1 * 10 + zombie.getX, distance.Item2 * 10 + zombie.getY);
+                    double destinationX = distance.Item1 * 10 + zombie.getX;
+                    double destinationY = distance.Item2 * 10 + zombie.getY;
+                    zombie.SetDirection(destinationX, destinationY);
                 }
             }                 
         }

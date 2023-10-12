@@ -19,3 +19,24 @@ C:\Users\smoot\Documents\gamejam\shooter\obj\Debug\net452\shooter.AssemblyInfo.c
 C:\Users\smoot\Documents\gamejam\shooter\obj\Debug\net452\shooter.csproj.CoreCompileInputs.cache
 C:\Users\smoot\Documents\gamejam\shooter\obj\Debug\net452\shooter.exe
 C:\Users\smoot\Documents\gamejam\shooter\obj\Debug\net452\shooter.pdb
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\bin\Debug\net452\shooter.exe.config
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\bin\Debug\net452\shooter.exe
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\bin\Debug\net452\shooter.pdb
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\obj\Debug\net452\shooter.csproj.AssemblyReference.cache
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\obj\Debug\net452\shooter.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\obj\Debug\net452\shooter.AssemblyInfoInputs.cache
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\obj\Debug\net452\shooter.AssemblyInfo.cs
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\obj\Debug\net452\shooter.csproj.CoreCompileInputs.cache
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\obj\Debug\net452\shooter.exe
+C:\Users\rala\OneDrive - languagewire.com\codefun\DungeonCrawler\dungeoncrawler\obj\Debug\net452\shooter.pdb
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\bin\Debug\net452\shooter.exe.config
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\bin\Debug\net452\shooter.exe
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\bin\Debug\net452\shooter.pdb
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.csproj.AssemblyReference.cache
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.csproj.SuggestedBindingRedirects.cache
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.AssemblyInfoInputs.cache
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.AssemblyInfo.cs
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.csproj.CoreCompileInputs.cache
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.exe
+C:\Users\smoot\Documents\gamejam\DungeonCrawler\DungeonCrawler\obj\Debug\net452\shooter.pdb

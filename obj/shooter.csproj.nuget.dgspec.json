@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\smoot\\Documents\\gamejam\\shooter\\shooter.csproj": {}
+    "C:\\Users\\smoot\\Documents\\gamejam\\DungeonCrawler\\DungeonCrawler\\shooter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\smoot\\Documents\\gamejam\\shooter\\shooter.csproj": {
+    "C:\\Users\\smoot\\Documents\\gamejam\\DungeonCrawler\\DungeonCrawler\\shooter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\smoot\\Documents\\gamejam\\shooter\\shooter.csproj",
+        "projectUniqueName": "C:\\Users\\smoot\\Documents\\gamejam\\DungeonCrawler\\DungeonCrawler\\shooter.csproj",
         "projectName": "shooter",
-        "projectPath": "C:\\Users\\smoot\\Documents\\gamejam\\shooter\\shooter.csproj",
+        "projectPath": "C:\\Users\\smoot\\Documents\\gamejam\\DungeonCrawler\\DungeonCrawler\\shooter.csproj",
         "packagesPath": "C:\\Users\\smoot\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\smoot\\Documents\\gamejam\\shooter\\obj\\",
+        "outputPath": "C:\\Users\\smoot\\Documents\\gamejam\\DungeonCrawler\\DungeonCrawler\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\smoot\\AppData\\Roaming\\NuGet\\NuGet.Config"

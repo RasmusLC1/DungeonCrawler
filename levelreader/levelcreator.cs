@@ -58,9 +58,9 @@ namespace ZombieGame.Levels {
             }
         }
         public void InitialisePlayer(){
-            player = new Player(150, 150, 10, 10, 5, 5);
-            player.updateDeltaX(Math.Cos(player.GetViewAngle)*5);
-            player.updateDeltaY(Math.Sin(player.GetViewAngle)*5);
+            player = new Player(150, 150, 10, 10, 5);
+            player.updateDeltaX(Math.Cos(player.GetViewAngle)*player.getplayerSpeed);
+            player.updateDeltaY(Math.Sin(player.GetViewAngle)*player.getplayerSpeed);
         }
         public void ClearLevel() {
             signs.Clear();

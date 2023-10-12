@@ -49,15 +49,15 @@ public class Movement {
             if (player.GetViewAngle < 0){
                 player.updatePlayerAngle(2*Math.PI);
             }
-            player.updateDeltaX(Math.Cos(player.GetViewAngle)*5);
-            player.updateDeltaY(Math.Sin(player.GetViewAngle)*5);
+            player.updateDeltaX(Math.Cos(player.GetViewAngle)*player.getplayerSpeed);
+            player.updateDeltaY(Math.Sin(player.GetViewAngle)*player.getplayerSpeed);
         } else if (keypress.getdPressed){
             player.updatePlayerAngle(0.1);
             if (player.GetViewAngle > 2*Math.PI){
                 player.updatePlayerAngle(-2*Math.PI);
             }
-            player.updateDeltaX(Math.Cos(player.GetViewAngle)*5);
-            player.updateDeltaY(Math.Sin(player.GetViewAngle)*5);
+            player.updateDeltaX(Math.Cos(player.GetViewAngle)*player.getplayerSpeed);
+            player.updateDeltaY(Math.Sin(player.GetViewAngle)*player.getplayerSpeed);
         }
 
         if (!field[normalizedDirectionX/10][normalizedDirectionY/10].getwall

@@ -5,7 +5,7 @@ namespace ZombieGame.Entities{
 
     public class Player : Entity{
         private int HitPoints;
-        private int PlayerSpeed;
+        private int playerSpeed = 4;
         private string weapon = "shotgun";
         private const int playerWidth = 10;
         private double viewAngle;
@@ -20,7 +20,7 @@ namespace ZombieGame.Entities{
             get{return weapon;}
         }
         public int getplayerSpeed {
-            get{return PlayerSpeed;}
+            get{return playerSpeed;}
         }
         public double GetViewAngle {
             get{return viewAngle;}
@@ -38,9 +38,8 @@ namespace ZombieGame.Entities{
             get{return deltaY;}
         }
 
-        public Player(double x, double y, int width, int height, int hitPoints, int playerSpeed) : base(x, y, width, height) {
+        public Player(double x, double y, int width, int height, int hitPoints) : base(x, y, width, height) {
             HitPoints = hitPoints;
-            PlayerSpeed = playerSpeed;
         }
         public void Hit(){
             HitPoints--;

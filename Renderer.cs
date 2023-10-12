@@ -115,16 +115,16 @@ public class GameRenderer {
                         // Draw the "3D" wall rectangle on the screen.
                         g.FillRectangle(Brushes.Gray, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
                         break;
-                    // } else if (levelCreator.getfields[fieldRow][fieldColumn].getenemy){
-                    //     Calculate3DObject(g, player, numRays, i);
-                    //     // Draw the "3D" wall rectangle on the screen.
-                    //     g.FillRectangle(Brushes.Green, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
-                    // break; // Stop the ray when it hits a wall
-                    // } else if (levelCreator.getfields[fieldRow][fieldColumn].gettreasure){
-                    //     Calculate3DObject(g, player, numRays, i);
-                    //     // Draw the "3D" wall rectangle on the screen.
-                    //     g.FillRectangle(Brushes.Gold, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
-                    //     break; // Stop the ray when it hits a wall
+                    } else if (levelCreator.getfields[fieldRow][fieldColumn].getenemy){
+                        Calculate3DObject(g, player, numRays, i);
+                        // Draw the "3D" wall rectangle on the screen.
+                        g.FillRectangle(Brushes.Green, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
+                    break; // Stop the ray when it hits a wall
+                    } else if (levelCreator.getfields[fieldRow][fieldColumn].gettreasure){
+                        Calculate3DObject(g, player, numRays, i);
+                        // Draw the "3D" wall rectangle on the screen.
+                        g.FillRectangle(Brushes.Gold, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
+                        break; // Stop the ray when it hits a wall
                     } 
             }
         }

@@ -1,0 +1,23 @@
+- Mouse tracking for movement -- Done
+- Raycasting -- Done
+- Zombie collision
+- Clank
+- Ammunition
+- Random level creation
+    - Hades design layout where you cobble together preexisting levels together
+- Power ups on the field
+- Card system
+    - Like clank with various powerups that you set before you go into a dungeon
+- Different monsters
+- Textures
+- Inventory
+- Save state
+- Level stages
+- Envioremental hasards
+- Unity testing
+- knock back
+- Noise generation when picking up items, shooting,
+    sprinting, blowing things up and opening doors
+- Traps
+- UI, health, ammo, level, deck status, cards drawn etc
+- 

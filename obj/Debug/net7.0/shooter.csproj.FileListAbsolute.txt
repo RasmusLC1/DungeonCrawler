@@ -1,0 +1,5 @@
+C:\Users\rala\OneDrive - languagewire.com\codefun\shooter\obj\Debug\net7.0\shooter.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rala\OneDrive - languagewire.com\codefun\shooter\obj\Debug\net7.0\shooter.AssemblyInfoInputs.cache
+C:\Users\rala\OneDrive - languagewire.com\codefun\shooter\obj\Debug\net7.0\shooter.AssemblyInfo.cs
+C:\Users\rala\OneDrive - languagewire.com\codefun\shooter\obj\Debug\net7.0\shooter.csproj.CoreCompileInputs.cache
+C:\Users\rala\OneDrive - languagewire.com\codefun\shooter\obj\Debug\net7.0\shooter.csproj.AssemblyReference.cache

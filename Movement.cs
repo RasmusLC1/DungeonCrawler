@@ -54,16 +54,14 @@ public class Movement {
             normalizedDirectionX = (int)(player.getX - distance.Item2*player.getplayerSpeed);
             normalizedDirectionY = (int)(player.getY - distance.Item1*player.getplayerSpeed);
         }
-        int fieldCoordinateXBack = normalizedDirectionX/10-1;
-        if (fieldCoordinateXBack < 0){
-            fieldCoordinateXBack = 0;
-        }
-        int fieldCoordinateYBack = normalizedDirectionY/10-1;
-        if (fieldCoordinateYBack < 0){
-            fieldCoordinateYBack = 0;
-        }
-        if (!field[fieldCoordinateXBack][fieldCoordinateYBack].getwall
-            && !field[normalizedDirectionX/10+1][normalizedDirectionY/10 + 1].getwall){
+        //Division by zero handling
+        int fieldCoordinateXBack = Math.Abs(normalizedDirectionX/10);
+        
+        int fieldCoordinateYBack = Math.Abs(normalizedDirectionY/10);
+        
+        if (!field[normalizedDirectionX/10][normalizedDirectionY/10].getwall
+            && !field[normalizedDirectionX/10+1][normalizedDirectionY/10 + 1].getwall
+            && !field[normalizedDirectionX/10 - 1][normalizedDirectionY/10 - 1].getwall){
             player.updateXpos(normalizedDirectionX);
             player.updateYpos(normalizedDirectionY);
         }

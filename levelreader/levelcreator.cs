@@ -42,9 +42,8 @@ namespace ZombieGame.Levels {
                     }
                 }
             }
-            player = new Player(150, 150, 10, 10, 5, 5, 0, 0);
+            player = new Player(150, 150, 10, 10, 5, 5);
             ClearLevel();
-
         }
         public void fieldsCreator(){
             for (int i = 0; i < movement.getWidth; i+=10){

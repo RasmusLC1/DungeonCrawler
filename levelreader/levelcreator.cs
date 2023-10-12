@@ -42,7 +42,7 @@ namespace ZombieGame.Levels {
                     }
                 }
             }
-            player = new Player(150, 150, 10, 10, 5, 5);
+            InitialisePlayer();
             ClearLevel();
         }
         public void fieldsCreator(){
@@ -56,6 +56,11 @@ namespace ZombieGame.Levels {
                 fields.Add(fieldsRow);
                 row++;
             }
+        }
+        public void InitialisePlayer(){
+            player = new Player(150, 150, 10, 10, 5, 5);
+            player.updateDeltaX(Math.Cos(player.GetViewAngle)*5);
+            player.updateDeltaY(Math.Sin(player.GetViewAngle)*5);
         }
         public void ClearLevel() {
             signs.Clear();

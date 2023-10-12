@@ -7,31 +7,31 @@ public class KeyPress{
     private bool aPressed = false;
     private bool sPressed = false;
     private bool dPressed = false;
+    private bool pPressed = false;
+
     private bool spacePressed = false;
     
     
-    public bool getwPressed
-    {
+    public bool getwPressed {
         get { return wPressed; }
     }
 
-    public bool getsPressed
-    {
+    public bool getsPressed {
         get { return sPressed; }
     }
 
-    public bool getaPressed
-    {
+    public bool getaPressed {
         get { return aPressed; }
     }
 
-    public bool getdPressed
-    {
+    public bool getdPressed {
         get { return dPressed; }
     }
+    public bool getpPressed {
+        get { return pPressed; }
+    }
 
-    public bool getspacePressed
-    {
+    public bool getspacePressed {
         get { return spacePressed; }
     }
 
@@ -49,6 +49,10 @@ public class KeyPress{
             dPressed = true;
         } else if (e.KeyCode == Keys.Space) {
             spacePressed = true;
+        } else if (e.KeyCode == Keys.P && pPressed) {
+            pPressed = false;
+        } else if (e.KeyCode == Keys.P && !pPressed) {
+            pPressed = true;
         }
     }
 

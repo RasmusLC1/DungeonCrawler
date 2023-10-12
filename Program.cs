@@ -80,7 +80,7 @@ public class main : Form {
 
         // Draw on the back buffer
         using (Graphics backBufferGraphics = Graphics.FromImage(backBuffer)){
-            gameRenderer.Render(backBufferGraphics, levelCreator, shooting, zombiespawner, mouseX, mouseY);
+            gameRenderer.Render(backBufferGraphics, levelCreator, shooting, zombiespawner, keypress, mouseX, mouseY);
 
         }
         // Draw the back buffer onto the form's graphics

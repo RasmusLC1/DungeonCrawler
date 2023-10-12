@@ -31,43 +31,83 @@ public class Movement {
         get {return Height;}
     }
 
-    public void PlayerControl(KeyPress keypress, Player player, int mouseX, int mouseY, List<List<Field>> field){
-        double directionX = mouseX - player.getX;
-        double directionY = mouseY - player.getY;
 
-        //Check if mouse is on player
-        if (Math.Abs(directionX) < 5 && Math.Abs(directionY) < 5){
-            return;
-        }
-        distance = coordinate.Direction(directionX, directionY);
-        // Normalize the direction vector (make it a unit vector)
-        if (keypress.getwPressed ){
-            normalizedDirectionX = (int)(player.getX + distance.Item1*player.getplayerSpeed);
-            normalizedDirectionY = (int)(player.getY + distance.Item2*player.getplayerSpeed);
+    public void PlayerControl(KeyPress keypress, Player player, int mouseX, int mouseY, List<List<Field>> field){
+        if (keypress.getwPressed){
+            // player.updateXpos(player.getX+player.getdeltaX);
+            // player.updateYpos(player.getY+player.getdeltaY);
+            normalizedDirectionX = (int)(player.getX + player.getdeltaX);
+            normalizedDirectionY = (int)(player.getY + player.getdeltaY);
         } else if (keypress.getsPressed){
-            normalizedDirectionX = (int)(player.getX - distance.Item1*player.getplayerSpeed);
-            normalizedDirectionY = (int)(player.getY - distance.Item2*player.getplayerSpeed);
-        } else if (keypress.getaPressed){
-            normalizedDirectionX = (int)(player.getX + distance.Item2*player.getplayerSpeed);
-            normalizedDirectionY = (int)(player.getY + distance.Item1*player.getplayerSpeed);
-        }else if (keypress.getdPressed){
-            normalizedDirectionX = (int)(player.getX - distance.Item2*player.getplayerSpeed);
-            normalizedDirectionY = (int)(player.getY - distance.Item1*player.getplayerSpeed);
+            // player.updateXpos(player.getX-player.getdeltaX);
+            // player.updateYpos(player.getY-player.getdeltaY);
+            normalizedDirectionX = (int)(player.getX - player.getdeltaX);
+            normalizedDirectionY = (int)(player.getY - player.getdeltaY);
         }
-        //Division by zero handling
-        int fieldCoordinateXBack = Math.Abs(normalizedDirectionX/10);
-        
-        int fieldCoordinateYBack = Math.Abs(normalizedDirectionY/10);
-        
+        if (keypress.getaPressed){
+            player.updatePlayerAngle(-0.1);
+            if (player.GetViewAngle < 0){
+                player.updatePlayerAngle(2*Math.PI);
+            }
+            player.updateDeltaX(Math.Cos(player.GetViewAngle)*5);
+            player.updateDeltaY(Math.Sin(player.GetViewAngle)*5);
+        } else if (keypress.getdPressed){
+            player.updatePlayerAngle(0.1);
+            if (player.GetViewAngle > 2*Math.PI){
+                player.updatePlayerAngle(-2*Math.PI);
+            }
+            player.updateDeltaX(Math.Cos(player.GetViewAngle)*5);
+            player.updateDeltaY(Math.Sin(player.GetViewAngle)*5);
+        }
+
         if (!field[normalizedDirectionX/10][normalizedDirectionY/10].getwall
-            && !field[normalizedDirectionX/10+1][normalizedDirectionY/10 + 1].getwall
-            && !field[normalizedDirectionX/10 - 1][normalizedDirectionY/10 - 1].getwall){
+            && !field[normalizedDirectionX/10 + 1][normalizedDirectionY/10 + 1].getwall){
             player.updateXpos(normalizedDirectionX);
             player.updateYpos(normalizedDirectionY);
         }
+        // //Set direction for raycasting
+            double destinationX =  player.getX + player.getdeltaX;
+            double destinationY =  player.getY + player.getdeltaY;
+            player.SetDirection(destinationX, destinationY);
+
+        //Mouse based movement:
+        // double directionX = mouseX - player.getX;
+        // double directionY = mouseY - player.getY;
+
+        // //Check if mouse is on player
+        // if (Math.Abs(directionX) < 5 && Math.Abs(directionY) < 5){
+        //     return;
+        // }
+        // distance = coordinate.Direction(directionX, directionY);
+        // // Normalize the direction vector (make it a unit vector)
+        // if (keypress.getwPressed ){
+        //     normalizedDirectionX = (int)(player.getX + distance.Item1*player.getplayerSpeed);
+        //     normalizedDirectionY = (int)(player.getY + distance.Item2*player.getplayerSpeed);
+        // } else if (keypress.getsPressed){
+        //     normalizedDirectionX = (int)(player.getX - distance.Item1*player.getplayerSpeed);
+        //     normalizedDirectionY = (int)(player.getY - distance.Item2*player.getplayerSpeed);
+        // } else if (keypress.getaPressed){
+        //     normalizedDirectionX = (int)(player.getX + distance.Item2*player.getplayerSpeed);
+        //     normalizedDirectionY = (int)(player.getY + distance.Item1*player.getplayerSpeed);
+        // }else if (keypress.getdPressed){
+        //     normalizedDirectionX = (int)(player.getX - distance.Item2*player.getplayerSpeed);
+        //     normalizedDirectionY = (int)(player.getY - distance.Item1*player.getplayerSpeed);
+        // }
+        
+        // if (!field[normalizedDirectionX/10][normalizedDirectionY/10].getwall
+        //     && !field[normalizedDirectionX/10+1][normalizedDirectionY/10 + 1].getwall
+        //     && !field[normalizedDirectionX/10 - 1][normalizedDirectionY/10 - 1].getwall){
+        //     player.updateXpos(normalizedDirectionX);
+        //     player.updateYpos(normalizedDirectionY);
+
+        //     //Set direction for raycasting
+        //     double destinationX = distance.Item1 * 10 + player.getX;
+        //     double destinationY = distance.Item2 * 10 + player.getY;
+        //     player.SetDirection(destinationX, destinationY);
+        // }
 
 
-        //Old movement system:
+        // Old movement system:
 
         // if (keypress.getwPressed ){
         //     player.updateYpos(player.getY - movementSpeed); 

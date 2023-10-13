@@ -4,21 +4,34 @@ using System.Diagnostics;
 using ZombieGame.Levels;
 using ZombieGame.Entities;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 public class GameRenderer {
     private Coordinate coordinate = new Coordinate();
     private Stopwatch FrameUpdater = new Stopwatch();
     private List< Tuple<double, double>> visibleTiles; 
     private Movement movement = new Movement();
-    double angleDifference;
-    double rayAngle;
-    double rayX3D;
-    double rayY3D;
-    double rayDistance;
-    double wallHeight;
-    double wallTop;
-    double wallLeft;
-    double distancePlayertoWall;
+    private double angleDifference;
+    private double rayAngle;
+    private double rayX3D;
+    private double rayY3D;
+    private double rayDistance;
+    private double wallHeight;
+    private double wallTop;
+    private double wallLeft;
+    private double TreasureangleDifference;
+    private List<double> treasureHeight = new List<double>();
+    private List<double> treasureTop = new List<double>();
+    private List<double> treasureLeft = new List<double>();
+    private List<Field> treasureFields = new List<Field>();
+    private int treasureCount = 0;
+    private double enemyangleDifference;
+    private List<double> enemyHeight = new List<double>();
+    private List<double> enemyTop = new List<double>();
+    private List<double> enemyLeft = new List<double>();
+    private List<Field> enemyFields = new List<Field>();
+    private int enemyCount = 0;
+
     public void Render(Graphics g, LevelCreator level, Shooting shooting, ZombieSpawner zombiespawner, KeyPress keypress, int mouseX, int mouseY){
 
         Player player = level.getPlayer;
@@ -106,31 +119,100 @@ public class GameRenderer {
                 rayX3D += Math.Cos(rayAngle) * 0.1; 
                 rayY3D += Math.Sin(rayAngle) * 0.1; 
                 rayDistance += 0.1;
-
                 int fieldRow = (int)(rayX3D / 10);
                 int fieldColumn = (int)(rayY3D / 10);
+                Field field  = levelCreator.getfields[fieldRow][fieldColumn];
                     // Check if the ray hit a wall
-                    if (levelCreator.getfields[fieldRow][fieldColumn].getwall) {
-                        Calculate3DObject(g, player, numRays, i);
+                    if (field.getwall) {
+                        calculateWall(g, player, numRays, i);
                         // Draw the "3D" wall rectangle on the screen.
-                        g.FillRectangle(Brushes.Gray, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
+                        g.FillRectangle(Brushes.Gray, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight); //Wall
+                        g.FillRectangle(Brushes.Blue, (float)wallLeft, (float)(wallTop+wallHeight), (float)wallWidth, (float)(wallHeight * rayDistance)); //floor
+                        g.FillRectangle(Brushes.Red, (float)wallLeft, (float)(0), (float)wallWidth, (float)(wallTop)); //Ceiling
+
+
                         break;
-                    } else if (levelCreator.getfields[fieldRow][fieldColumn].getenemy){
-                        Calculate3DObject(g, player, numRays, i);
-                        // Draw the "3D" wall rectangle on the screen.
-                        g.FillRectangle(Brushes.Green, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
-                    break; // Stop the ray when it hits a wall
-                    } else if (levelCreator.getfields[fieldRow][fieldColumn].gettreasure){
-                        Calculate3DObject(g, player, numRays, i);
-                        // Draw the "3D" wall rectangle on the screen.
-                        g.FillRectangle(Brushes.Gold, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight);
-                        break; // Stop the ray when it hits a wall
-                    } 
+                    
+                    }else if (field.gettreasure){
+                        CalculateTreasure(g, field, player, numRays, i);
+                    } else if (field.getenemy){
+                        CalculateEnemy(g, field, player, numRays, i);
+                    }
             }
         }
+        for (int i = 0; i < treasureCount; i++){
+            g.FillRectangle(Brushes.Gold, (float)treasureLeft[i], (float)treasureTop[i], (float)treasureHeight[i]/2, (float)treasureHeight[i]/2);
+        }
+        for (int i = 0; i < enemyCount; i++){
+            g.FillRectangle(Brushes.Green, (float)enemyLeft[i], (float)enemyTop[i], (float)enemyHeight[i], (float)enemyHeight[i]);
+        }
+        ListCleanup();
+        double playerHeight = 32; // Adjust this to the player's height in your game
+    double floorY = player.getY + playerHeight; // The Y-coordinate of the floor
 
     }
-    public void Calculate3DObject(Graphics g, Player player, int numRays, int i){
+    
+    private void CalculateTreasure(Graphics g, Field field, Player player, int numRays, int i){
+        bool newTreasureFound = true;
+        for (int j = 0; j < treasureCount; j++){
+            if (field.getX == treasureFields[j].getX &&
+                field.getY == treasureFields[j].getY){
+                    newTreasureFound = false;
+                }
+            
+        }
+        if (newTreasureFound){
+
+            // Calculate the angle difference between the ray and the player's view direction
+            TreasureangleDifference = rayAngle - coordinate.GetAngleBetweenPoints(player.getX, player.getY, rayX3D, rayY3D);
+            // Calculate the correct wall height based on the distance.
+            treasureHeight.Add(g.VisibleClipBounds.Height / (rayDistance * Math.Cos(angleDifference))*10);
+
+            // Calculate the screen coordinates for drawing the wall rectangle
+            treasureTop.Add(wallTop+wallHeight);
+            treasureLeft.Add(i * (g.VisibleClipBounds.Width / numRays));
+            treasureFields.Add(field);
+            treasureCount++;
+        }
+    }
+    private void CalculateEnemy(Graphics g, Field field, Player player, int numRays, int i){
+        bool newenemyFound = true;
+        for (int j = 0; j < enemyCount; j++){
+            if (field.getX == enemyFields[j].getX &&
+                field.getY == enemyFields[j].getY){
+                    newenemyFound = false;
+                }
+            
+        }
+        if (newenemyFound){
+
+            // Calculate the angle difference between the ray and the player's view direction
+            enemyangleDifference = rayAngle - coordinate.GetAngleBetweenPoints(player.getX, player.getY, rayX3D, rayY3D);
+            // Calculate the correct wall height based on the distance.
+            enemyHeight.Add(g.VisibleClipBounds.Height / (rayDistance * Math.Cos(angleDifference))*20);
+
+            // Calculate the screen coordinates for drawing the wall rectangle
+            enemyTop.Add(wallTop+wallHeight);
+            enemyLeft.Add(i * (g.VisibleClipBounds.Width / numRays));
+            enemyFields.Add(field);
+            enemyCount++;
+        }
+    }
+    private void ListCleanup(){
+        treasureHeight.Clear();
+        treasureTop.Clear();
+        treasureLeft.Clear();
+        treasureFields.Clear();
+        treasureCount = 0;
+
+        enemyHeight.Clear();
+        enemyTop.Clear();
+        enemyLeft.Clear();
+        enemyFields.Clear();
+        enemyCount = 0;
+    }
+
+    public void calculateWall(Graphics g, Player player, int numRays, int i){
         // Calculate the angle difference between the ray and the player's view direction
         angleDifference = rayAngle - coordinate.GetAngleBetweenPoints(player.getX, player.getY, rayX3D, rayY3D);
         // Calculate the correct wall height based on the distance.
@@ -139,6 +221,7 @@ public class GameRenderer {
         // Calculate the screen coordinates for drawing the wall rectangle
         wallTop = g.VisibleClipBounds.Height / 2 - wallHeight / 2;
         wallLeft = i * (g.VisibleClipBounds.Width / numRays);
+
     }
 
     public void FieldOfViewPlayer(Graphics g, LevelCreator levelCreator, ZombieSpawner zombiespawner, double destionationX, double destionationY,
@@ -225,20 +308,6 @@ public class GameRenderer {
                     break; // Stop the ray when it hits a wall
                 } 
             }
-            // visibleTiles.Add(Tuple.Create(rayXFront, rayYFront));
-            // visibleTiles.Add(Tuple.Create(rayXBack, rayYBack));
-
-            // Ray drawing for troubleshooting, add graphics g to the method input
-            //and add it to the ZombieGame_Paint event in program to trigger
-            // Pen linePen = new Pen(Brushes.Aqua);
-            // g.DrawLine(linePen, (float)entity.getX, (float)entity.getY, (float)rayXFront, (float)rayYFront);
-            // g.DrawLine(linePen, (float)entity.getX, (float)entity.getY, (float)rayXBack, (float)rayYBack);
         }
-        // foreach (Zombie zombie in zombiespawner.getzombies){
-        //     if (visibleTiles.Contains(Tuple.Create(zombie.getX, zombie.getY))){
-        //         drawZombie(g, (int)zombie.getX, (int)zombie.getY);
-        //     }
-        // }
-        // visibleTiles.Clear();
     }
 }

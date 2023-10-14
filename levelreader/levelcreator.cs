@@ -14,6 +14,7 @@ namespace ZombieGame.Levels {
         private List<List<Field>> fields = new List<List<Field>>();
         private List<Field> fieldsRow;
         private Player player;
+        private Lighting lighting = new Lighting();
         private int row = 0;
         private int col = 0;
         public List<List<Field>> getfields{
@@ -35,13 +36,14 @@ namespace ZombieGame.Levels {
                 for (int j = 0; j < mapdata.getlevel[i].Length; j++){
                     if (mapdata.getlevel[i][j] == 'W'){
                         fields[j][i].updateWall(true);
-                    } else if (mapdata.getlevel[i][j] == 'L'){
+                    } else if (mapdata.getlevel[i][j] == 'Z'){
                         fields[j][i].updateMonsterSpawner(true);
                     } else if (mapdata.getlevel[i][j] == 'T'){
                         fields[j][i].updateTreasure(true);
                     }
                 }
             }
+            initialiseLight();
             InitialisePlayer();
             ClearLevel();
         }
@@ -50,11 +52,21 @@ namespace ZombieGame.Levels {
                 col = 0;
                 fieldsRow = new List<Field>();
                 for (int j = 0; j < movement.getHeight; j+=10){
-                    fieldsRow.Add(new Field(i, j, false, false, false, false, false));
+                    fieldsRow.Add(new Field(i, j));
                     col++;
                 }
                 fields.Add(fieldsRow);
                 row++;
+            }
+        }
+        public void initialiseLight(){
+            for (int i = 0; i < mapdata.getlevel.Count; i++){
+                for (int j = 0; j < mapdata.getlevel[i].Length; j++){
+                    if (mapdata.getlevel[i][j] == 'L'){
+                                fields[j][i].updateTorch(true);
+                                lighting.FieldOfViewTorch(fields, fields[j][i]);
+                            }
+                }
             }
         }
         public void InitialisePlayer(){

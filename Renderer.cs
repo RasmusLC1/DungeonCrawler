@@ -19,17 +19,20 @@ public class GameRenderer {
     private double wallHeight;
     private double wallTop;
     private double wallLeft;
-    private double TreasureangleDifference;
     private List<double> treasureHeight = new List<double>();
     private List<double> treasureTop = new List<double>();
     private List<double> treasureLeft = new List<double>();
-    private List<Field> treasureFields = new List<Field>();
+    private List<Tuple <int, int>> treasureFields = new List<Tuple<int, int>>();
+    private double treasureangleDifference;
+
+    private Field field = new Field(0, 0);
     private int treasureCount = 0;
-    private double enemyangleDifference;
     private List<double> enemyHeight = new List<double>();
     private List<double> enemyTop = new List<double>();
     private List<double> enemyLeft = new List<double>();
-    private List<Field> enemyFields = new List<Field>();
+    private List<Tuple <int, int>> enemyFields = new List<Tuple<int, int>>();
+    private double enemyangleDifference;
+
     private int enemyCount = 0;
 
     public void Render(Graphics g, LevelCreator level, Shooting shooting, ZombieSpawner zombiespawner, KeyPress keypress, int mouseX, int mouseY){
@@ -100,7 +103,7 @@ public class GameRenderer {
 
         // Calculate the angle increment between rays
         double angleIncrement = fovAngle / (numRays - 1);
-
+        List <List<Field>> fields = levelCreator.getfields;
         for (int i = 0; i < numRays; i++) {
             // Calculate the angle for the current ray by spreading the direction
             rayAngle = Math.Atan2(direction.Item2, direction.Item1) + (i - (numRays - 1) / 2) * angleIncrement;
@@ -124,9 +127,12 @@ public class GameRenderer {
                 Field field  = levelCreator.getfields[fieldRow][fieldColumn];
                     // Check if the ray hit a wall
                     if (field.getwall) {
+                        field.updateLightLevel((int)rayDistance);
                         calculateWall(g, player, numRays, i);
                         // Draw the "3D" wall rectangle on the screen.
-                        g.FillRectangle(Brushes.Gray, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight); //Wall
+                        int grey = ColorCalculator(105, field.getlightLevel  - (int)field.gettorchLight);
+                        SolidBrush customBrush = new SolidBrush(Color.FromArgb(grey, grey, grey));
+                        g.FillRectangle(customBrush, (float)wallLeft, (float)wallTop, (float)wallWidth, (float)wallHeight); //Wall
                         g.FillRectangle(Brushes.Blue, (float)wallLeft, (float)(wallTop+wallHeight), (float)wallWidth, (float)(wallHeight * rayDistance)); //floor
                         g.FillRectangle(Brushes.Red, (float)wallLeft, (float)(0), (float)wallWidth, (float)(wallTop)); //Ceiling
 
@@ -134,70 +140,96 @@ public class GameRenderer {
                         break;
                     
                     }else if (field.gettreasure){
+                        field.updateLightLevel((int)rayDistance);
                         CalculateTreasure(g, field, player, numRays, i);
                     } else if (field.getenemy){
+                        field.updateLightLevel((int)rayDistance);
                         CalculateEnemy(g, field, player, numRays, i);
+                    } else if (field.gettorch) {
                     }
             }
         }
         for (int i = 0; i < treasureCount; i++){
-            g.FillRectangle(Brushes.Gold, (float)treasureLeft[i], (float)treasureTop[i], (float)treasureHeight[i]/2, (float)treasureHeight[i]/2);
+            int x = treasureFields[i].Item1/10;
+            int y = treasureFields[i].Item2/10;
+            //Get RGP values from Rapid tables
+            int red = ColorCalculator(240, fields[x][y].getlightLevel);
+            int green = ColorCalculator(215, fields[x][y].getlightLevel);
+            SolidBrush customBrush = new SolidBrush(Color.FromArgb(red, green, 0));
+            g.FillRectangle(customBrush, (float)treasureLeft[i], (float)treasureTop[i], (float)treasureHeight[i]/2, (float)treasureHeight[i]/2);
         }
         for (int i = 0; i < enemyCount; i++){
-            g.FillRectangle(Brushes.Green, (float)enemyLeft[i], (float)enemyTop[i], (float)enemyHeight[i], (float)enemyHeight[i]);
+            int x = enemyFields[i].Item1/10;
+            int y = enemyFields[i].Item2/10;
+            int green = ColorCalculator(250, fields[x][y].getlightLevel);
+            SolidBrush customBrush = new SolidBrush(Color.FromArgb(0, green, 0));
+            g.FillRectangle(customBrush, (float)enemyLeft[i], (float)enemyTop[i], (float)enemyHeight[i], (float)enemyHeight[i]);
         }
         ListCleanup();
-        double playerHeight = 32; // Adjust this to the player's height in your game
-    double floorY = player.getY + playerHeight; // The Y-coordinate of the floor
 
+    }
+    private int ColorCalculator(int initialColor, int lightLevel){
+        
+        //prevent light from affecting color to much
+        if (lightLevel < initialColor){
+            return initialColor;
+        }
+        int colorValue = initialColor - lightLevel / 2;
+        if (colorValue > 250){
+            colorValue = 250;
+        } else if (colorValue < 0){
+            colorValue = 0;
+        }
+        return colorValue;
     }
     
     private void CalculateTreasure(Graphics g, Field field, Player player, int numRays, int i){
-        bool newTreasureFound = true;
+
+        //Duplicate checker
         for (int j = 0; j < treasureCount; j++){
-            if (field.getX == treasureFields[j].getX &&
-                field.getY == treasureFields[j].getY){
-                    newTreasureFound = false;
+
+            if (field.getX == treasureFields[j].Item1 &&
+                field.getY == treasureFields[j].Item2){
+                    return;
                 }
             
         }
-        if (newTreasureFound){
+        treasureangleDifference = rayAngle - coordinate.GetAngleBetweenPoints(player.getX, player.getY, rayX3D, rayY3D);
 
-            // Calculate the angle difference between the ray and the player's view direction
-            TreasureangleDifference = rayAngle - coordinate.GetAngleBetweenPoints(player.getX, player.getY, rayX3D, rayY3D);
             // Calculate the correct wall height based on the distance.
-            treasureHeight.Add(g.VisibleClipBounds.Height / (rayDistance * Math.Cos(angleDifference))*10);
+            treasureHeight.Add(g.VisibleClipBounds.Height / (rayDistance * Math.Cos(treasureangleDifference))*10);
 
             // Calculate the screen coordinates for drawing the wall rectangle
             treasureTop.Add(wallTop+wallHeight);
             treasureLeft.Add(i * (g.VisibleClipBounds.Width / numRays));
-            treasureFields.Add(field);
+
+            //Add the new treasure to the list and increment the counter
+            treasureFields.Add(Tuple.Create(field.getX, field.getY));
             treasureCount++;
-        }
     }
     private void CalculateEnemy(Graphics g, Field field, Player player, int numRays, int i){
-        bool newenemyFound = true;
-        for (int j = 0; j < enemyCount; j++){
-            if (field.getX == enemyFields[j].getX &&
-                field.getY == enemyFields[j].getY){
-                    newenemyFound = false;
-                }
-            
-        }
-        if (newenemyFound){
 
+        //Duplicate checker
+        for (int j = 0; j < enemyCount; j++){
+            if (field.getX == enemyFields[j].Item1 &&
+                field.getY == enemyFields[j].Item2){
+                    return;
+                }    
+        }
             // Calculate the angle difference between the ray and the player's view direction
             enemyangleDifference = rayAngle - coordinate.GetAngleBetweenPoints(player.getX, player.getY, rayX3D, rayY3D);
             // Calculate the correct wall height based on the distance.
-            enemyHeight.Add(g.VisibleClipBounds.Height / (rayDistance * Math.Cos(angleDifference))*20);
+            enemyHeight.Add(g.VisibleClipBounds.Height / (rayDistance * Math.Cos(enemyangleDifference))*20);
 
             // Calculate the screen coordinates for drawing the wall rectangle
             enemyTop.Add(wallTop+wallHeight);
             enemyLeft.Add(i * (g.VisibleClipBounds.Width / numRays));
-            enemyFields.Add(field);
+
+            //Add the new enemy to the list and increment the counter
+            enemyFields.Add(Tuple.Create(field.getX, field.getY));
             enemyCount++;
-        }
     }
+    
     private void ListCleanup(){
         treasureHeight.Clear();
         treasureTop.Clear();
@@ -223,6 +255,8 @@ public class GameRenderer {
         wallLeft = i * (g.VisibleClipBounds.Width / numRays);
 
     }
+
+    
 
     public void FieldOfViewPlayer(Graphics g, LevelCreator levelCreator, ZombieSpawner zombiespawner, double destionationX, double destionationY,
                             Entity entity) {
@@ -279,10 +313,8 @@ public class GameRenderer {
                     break; // Stop the ray when it hits a wall
                 } else if (levelCreator.getfields[fieldRow][fieldColumn].getenemy){
                     drawZombie(g, xPos, yPos);
-                    break; // Stop the ray when it hits a wall
                 } else if (levelCreator.getfields[fieldRow][fieldColumn].gettreasure){
                     drawTreasure(g, xPos, yPos, field.getsize);
-                    break; // Stop the ray when it hits a wall
                 } 
             }
             rayDistance = 0;
@@ -302,12 +334,12 @@ public class GameRenderer {
                     break; // Stop the ray when it hits a wall
                 } else if (levelCreator.getfields[fieldRow][fieldColumn].getenemy){
                     drawZombie(g, xPos, yPos);
-                    break; // Stop the ray when it hits a wall
                 } else if (levelCreator.getfields[fieldRow][fieldColumn].gettreasure){
                     drawTreasure(g, xPos, yPos, field.getsize);
-                    break; // Stop the ray when it hits a wall
                 } 
             }
         }
     }
+    
+    
 }

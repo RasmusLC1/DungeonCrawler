@@ -19,8 +19,8 @@ public class Movement {
     private Tuple<double, double> distance;
     private Random random = new Random();
     private RayTracer rayTracer = new RayTracer();
-    Field startField = new Field(150, 150, false, false, false, false, false); // Change the coordinates to match the starting point.
-    Field finishField = new Field(200, 200, false, false, false, false, false); // Change the coordinates to match the finishing point.
+    Field startField = new Field(150, 150); // Change the coordinates to match the starting point.
+    Field finishField = new Field(200, 200); // Change the coordinates to match the finishing point.
     int normalizedDirectionX;
     int normalizedDirectionY;
 
@@ -59,9 +59,12 @@ public class Movement {
             player.updateDeltaX(Math.Cos(player.GetViewAngle)*player.getplayerSpeed);
             player.updateDeltaY(Math.Sin(player.GetViewAngle)*player.getplayerSpeed);
         }
-
-        if (!field[normalizedDirectionX/10][normalizedDirectionY/10].getwall
-            && !field[normalizedDirectionX/10 + 1][normalizedDirectionY/10 + 1].getwall){
+        int x =  normalizedDirectionX/10;
+        int y = normalizedDirectionY/10;
+        if (!field[x][y].getwall &&
+            !field[x + 1][y + 1].getwall &&
+            !field[x - 1][y + 1].getwall &&
+            !field[x + 1][y - 1].getwall){
             player.updateXpos(normalizedDirectionX);
             player.updateYpos(normalizedDirectionY);
         }

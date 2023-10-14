@@ -79,14 +79,14 @@ class ShortestPath{
     int y = currentField.getY;
 
     List<Field> possibleFields = new List<Field>() {
-        new Field(x, y - 1, false, false, false, false, false),   // Up
-        new Field(x, y + 1, false, false, false, false, false),   // Down
-        new Field(x - 1, y, false, false, false, false, false),   // Left
-        new Field(x + 1, y, false, false, false, false, false),   // Right
-        // new Field(x - 1, y - 1, false, false, false, false, false), // Diagonal Up-Left
-        // new Field(x + 1, y - 1, false, false, false, false, false), // Diagonal Up-Right
-        // new Field(x - 1, y + 1, false, false, false, false, false), // Diagonal Down-Left
-        // new Field(x + 1, y + 1, false, false, false, false, false)  // Diagonal Down-Right
+        new Field(x, y - 1),   // Up
+        new Field(x, y + 1),   // Down
+        new Field(x - 1, y),   // Left
+        new Field(x + 1, y),   // Right
+        // new Field(x - 1, y - 1), // Diagonal Up-Left
+        // new Field(x + 1, y - 1), // Diagonal Up-Right
+        // new Field(x - 1, y + 1), // Diagonal Down-Left
+        // new Field(x + 1, y + 1)  // Diagonal Down-Right
     };
 
     // Copy the layout from grid to set wall and player.
